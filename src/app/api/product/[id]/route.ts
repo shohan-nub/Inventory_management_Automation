@@ -108,14 +108,6 @@ export async function DELETE(
       data: product,
     });
   } catch (error) {
-    console.error("Delete product error:", error);
-
-    return NextResponse.json(
-      {
-        success: false,
-        message: "Failed to delete product. It may be referenced by inventory.",
-      },
-      { status: 500 },
-    );
+    return errorResponse(error, "Failed to delete product", { "23503": "This product is referenced by purchase history and cannot be deleted." });
   }
 }

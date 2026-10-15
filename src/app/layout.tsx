@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "StockAI | AI-Powered Inventory Management",
-  description: "StockAI helps you monitor inventory, understand stock movement, and make informed decisions with intelligent insights.",
+  title: "ILUF | Inventory Management",
+  description: "ILUF brings products, categories, stock, and purchasing together in one clear inventory workspace.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

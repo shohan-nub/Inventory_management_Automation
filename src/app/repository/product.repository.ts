@@ -1,5 +1,6 @@
 import { db } from "@/db";
 import { products } from "@/db/schema/products";
+import { inventory } from "@/db/schema/inventory";
 import { eq } from "drizzle-orm";
 import type { InferInsertModel } from "drizzle-orm";
 
@@ -9,12 +10,11 @@ type UpdateProductInput = Partial<CreateProductInput>;
 export class ProductRepository {
   // CREATE
   async create(data: CreateProductInput) {
-    const [product] = await db
-      .insert(products)
-      .values(data)
-      .returning();
-
-    return product;
+    return db.transaction(async (tx) => {
+      const [product] = await tx.insert(products).values(data).returning();
+      await tx.insert(inventory).values({ productId: product.id, quantity: 0 });
+      return product;
+    });
   }
 
   // READ ALL
@@ -49,12 +49,11 @@ export class ProductRepository {
 
   // DELETE
   async delete(id: number) {
-    const [product] = await db
-      .delete(products)
-      .where(eq(products.id, id))
-      .returning();
-
-    return product ?? null;
+    return db.transaction(async (tx) => {
+      await tx.delete(inventory).where(eq(inventory.productId, id));
+      const [product] = await tx.delete(products).where(eq(products.id, id)).returning();
+      return product ?? null;
+    });
   }
 }
 

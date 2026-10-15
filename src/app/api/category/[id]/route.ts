@@ -105,14 +105,17 @@ export async function DELETE(
       data: category,
     });
   } catch (error) {
-    console.error("Delete category error:", error);
-
-    return NextResponse.json(
-      {
-        success: false,
-        message: "Failed to delete category. It may be referenced by products.",
-      },
-      { status: 500 },
-    );
+    const referenced = isForeignKeyViolation(error);
+    if (!referenced) console.error("Delete category error:", error);
+    return NextResponse.json({ success: false, message: referenced ? "This category contains products. Move or delete those products before deleting the category." : "Failed to delete category" }, { status: referenced ? 409 : 500 });
   }
+}
+
+function isForeignKeyViolation(error: unknown): boolean {
+  let current: unknown = error;
+  for (let depth = 0; depth < 4 && current && typeof current === "object"; depth++) {
+    if ("code" in current && current.code === "23503") return true;
+    current = "cause" in current ? current.cause : null;
+  }
+  return false;
 }
