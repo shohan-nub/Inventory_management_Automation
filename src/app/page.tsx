@@ -1,69 +1,51 @@
-import Image from "next/image";
+import Link from "next/link";
+
+function Mark() {
+  return <span className="brand-mark" aria-hidden="true"><i /><i /><i /><i /></span>;
+}
+
+function HeroArtwork() {
+  return (
+    <div className="home-art" aria-hidden="true">
+      <div className="art-halo art-halo-a" /><div className="art-halo art-halo-b" />
+      <div className="art-orbit art-orbit-a" /><div className="art-orbit art-orbit-b" />
+      <div className="preview-window glass-panel">
+        <div className="preview-top"><span className="preview-dots"><i /><i /><i /></span><span>STOCKAI / OVERVIEW</span><span className="preview-status" /></div>
+        <div className="preview-title">Inventory, in focus <span>01</span></div>
+        <div className="preview-chart">
+          <div className="preview-chart-label"><span>Illustrative movement</span><span>CONCEPT</span></div>
+          <svg viewBox="0 0 440 140" fill="none"><defs><linearGradient id="home-area" x1="220" y1="18" x2="220" y2="140" gradientUnits="userSpaceOnUse"><stop stopColor="#8275df" stopOpacity=".2"/><stop offset="1" stopColor="#8275df" stopOpacity="0"/></linearGradient></defs><path d="M0 111C35 105 39 82 75 88S114 107 145 75 190 84 222 66 265 94 294 56 337 64 361 42 403 45 440 20V140H0V111Z" fill="url(#home-area)"/><path d="M0 111C35 105 39 82 75 88S114 107 145 75 190 84 222 66 265 94 294 56 337 64 361 42 403 45 440 20" stroke="#7B70D8" strokeWidth="2.5" strokeLinecap="round"/><circle cx="361" cy="42" r="5" fill="#fff" stroke="#7B70D8" strokeWidth="3"/></svg>
+          <div className="preview-axis"><span>Stock patterns</span><span>Illustrative visual</span></div>
+        </div>
+        <div className="preview-bottom"><span className="preview-spark">✳</span><span><strong>See the whole picture</strong><small>Clear signals, connected.</small></span><span className="preview-arrow">↗</span></div>
+      </div>
+      <div className="art-chip art-chip-one"><span className="art-chip-icon">✧</span><span><small>STOCK VISIBILITY</small><strong>Clarity at a glance</strong></span></div>
+      <div className="art-chip art-chip-two"><span className="art-chip-icon art-chip-lavender">⌁</span><span><small>AI-POWERED INSIGHTS</small><strong>Decisions with context</strong></span></div>
+      <span className="art-node art-node-one" /><span className="art-node art-node-two" /><span className="art-node art-node-three" />
+    </div>
+  );
+}
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <main className="home-page">
+      <div className="home-glow home-glow-one" /><div className="home-glow home-glow-two" />
+      <nav className="home-nav glass-panel" aria-label="Main navigation">
+        <Link href="/" className="home-brand" aria-label="StockAI home"><Mark /><span>Stock<span>AI</span></span></Link>
+        <span className="home-nav-caption"><i /> INVENTORY INTELLIGENCE</span>
+        <Link href="/login" className="home-login">Login <span aria-hidden="true">↗</span></Link>
+      </nav>
+      <section className="home-hero" aria-labelledby="home-title">
+        <div className="home-copy">
+          <div className="home-eyebrow"><span>✳</span> INVENTORY, WITH MORE INTELLIGENCE</div>
+          <h1 id="home-title">AI-Powered<br /><em>Inventory</em><br />Management<span className="home-title-dot">.</span></h1>
+          <p>Know what you have, what is changing, and what to do next. Monitor stock, understand your data, and find intelligent insights in one clear view.</p>
+          <div className="home-actions"><Link href="/admin" className="home-primary">Go to Dashboard <span aria-hidden="true">↗</span></Link><Link href="/login" className="home-secondary">Login <span aria-hidden="true">→</span></Link></div>
+          <div className="home-footnote"><span /> MADE FOR CLEARER DECISIONS</div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+        <HeroArtwork />
+      </section>
+      <div className="home-footer"><span>INVENTORY, IN A NEW LIGHT</span><span className="home-footer-mid"><i /> INTELLIGENCE THAT MOVES WITH YOU</span><span>STOCKAI / 01</span></div>
+    </main>
   );
 }
