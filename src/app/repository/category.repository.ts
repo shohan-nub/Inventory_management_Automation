@@ -7,7 +7,7 @@ type CreateCategoryInput = InferInsertModel<typeof categories>;
 type UpdateCategoryInput = Partial<CreateCategoryInput>;
 
 export class CategoryRepository {
-  // CREATE
+  
   async create(data: CreateCategoryInput) {
     const [category] = await db
       .insert(categories)
@@ -17,12 +17,12 @@ export class CategoryRepository {
     return category;
   }
 
-  // READ ALL
+ 
   async findAll() {
     return db.select().from(categories);
   }
 
-  // READ BY ID
+  
   async findById(id: number) {
     const [category] = await db
       .select()
@@ -33,7 +33,7 @@ export class CategoryRepository {
     return category ?? null;
   }
 
-  // UPDATE
+
   async update(id: number, data: UpdateCategoryInput) {
     const [category] = await db
       .update(categories)
@@ -44,7 +44,6 @@ export class CategoryRepository {
     return category ?? null;
   }
 
-  // DELETE
   async delete(id: number) {
     const [category] = await db
       .delete(categories)

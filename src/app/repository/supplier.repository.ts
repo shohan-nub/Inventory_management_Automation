@@ -1,6 +1,6 @@
 import { db } from "@/db";
 import { suppliers } from "@/db/schema";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, sql } from "drizzle-orm";
 
 export async function getAllSuppliers() {
   return db
@@ -14,6 +14,34 @@ export async function getSupplierById(id: number) {
     .select()
     .from(suppliers)
     .where(eq(suppliers.id, id))
+    .limit(1);
+
+  return supplier ?? null;
+}
+
+export async function getSupplierByName(name: string) {
+  const normalizedName = name.trim().toLowerCase();
+
+  const [supplier] = await db
+    .select()
+    .from(suppliers)
+    .where(
+      sql`lower(trim(${suppliers.name})) = ${normalizedName}`
+    )
+    .limit(1);
+
+  return supplier ?? null;
+}
+
+export async function getSupplierByEmail(email: string) {
+  const normalizedEmail = email.trim().toLowerCase();
+
+  const [supplier] = await db
+    .select()
+    .from(suppliers)
+    .where(
+      sql`lower(trim(${suppliers.email})) = ${normalizedEmail}`
+    )
     .limit(1);
 
   return supplier ?? null;
@@ -40,7 +68,7 @@ export async function updateSupplier(
     email?: string | null;
     phone?: string | null;
     address?: string | null;
-  },
+  }
 ) {
   const [supplier] = await db
     .update(suppliers)

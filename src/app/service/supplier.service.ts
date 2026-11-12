@@ -1,17 +1,51 @@
 import {
   getAllSuppliers,
   getSupplierById,
+  getSupplierByName,
+  getSupplierByEmail,
   createSupplier,
   updateSupplier,
   deleteSupplier,
 } from "@/app/repository/supplier.repository";
+
+function normalizeName(name: string) {
+  return name.trim().toLowerCase();
+}
+
+function normalizeEmail(email?: string | null) {
+  return email?.trim().toLowerCase() || null;
+}
+
+async function validateDuplicateSupplier(
+  name: string,
+  email: string | null,
+  excludeId?: number
+) {
+  const existingName = await getSupplierByName(name);
+
+  if (existingName && existingName.id !== excludeId) {
+    throw new Error(
+      "A supplier with this name already exists"
+    );
+  }
+
+  if (email) {
+    const existingEmail = await getSupplierByEmail(email);
+
+    if (existingEmail && existingEmail.id !== excludeId) {
+      throw new Error(
+        "A supplier with this email already exists"
+      );
+    }
+  }
+}
 
 export async function listSuppliers() {
   return getAllSuppliers();
 }
 
 export async function findSupplier(id: number) {
-  if (!Number.isInteger(id) || id <= 0) {
+  if (!Number.isSafeInteger(id) || id <= 0) {
     throw new Error("Invalid supplier ID");
   }
 
@@ -30,13 +64,19 @@ export async function addSupplier(data: {
   phone?: string | null;
   address?: string | null;
 }) {
-  if (!data.name?.trim()) {
+  if (typeof data.name !== "string" || !data.name.trim()) {
     throw new Error("Supplier name is required");
   }
 
+  const name = data.name.trim();
+  const email = normalizeEmail(data.email);
+
+  await validateDuplicateSupplier(name, email);
+
   return createSupplier({
     ...data,
-    name: data.name.trim(),
+    name,
+    email,
   });
 }
 
@@ -47,21 +87,37 @@ export async function editSupplier(
     email?: string | null;
     phone?: string | null;
     address?: string | null;
-  },
+  }
 ) {
-  if (!Number.isInteger(id) || id <= 0) {
+  if (!Number.isSafeInteger(id) || id <= 0) {
     throw new Error("Invalid supplier ID");
   }
 
-  if (data.name !== undefined && !data.name.trim()) {
+  if (
+    data.name !== undefined &&
+    (typeof data.name !== "string" || !data.name.trim())
+  ) {
     throw new Error("Supplier name cannot be empty");
   }
 
+  const currentSupplier = await findSupplier(id);
+
+  const name =
+    data.name !== undefined
+      ? data.name.trim()
+      : currentSupplier.name;
+
+  const email =
+    data.email !== undefined
+      ? normalizeEmail(data.email)
+      : currentSupplier.email;
+
+  await validateDuplicateSupplier(name, email, id);
+
   const supplier = await updateSupplier(id, {
     ...data,
-    ...(data.name !== undefined
-      ? { name: data.name.trim() }
-      : {}),
+    name,
+    email,
   });
 
   if (!supplier) {
@@ -72,7 +128,7 @@ export async function editSupplier(
 }
 
 export async function removeSupplier(id: number) {
-  if (!Number.isInteger(id) || id <= 0) {
+  if (!Number.isSafeInteger(id) || id <= 0) {
     throw new Error("Invalid supplier ID");
   }
 

@@ -7,7 +7,7 @@ type CreateInventoryInput = InferInsertModel<typeof inventory>;
 type UpdateInventoryInput = Partial<CreateInventoryInput>;
 
 export class InventoryRepository {
-  // CREATE
+  
   async create(data: CreateInventoryInput) {
     const [item] = await db
       .insert(inventory)
@@ -17,12 +17,12 @@ export class InventoryRepository {
     return item;
   }
 
-  // READ ALL
+ 
   async findAll() {
     return db.select().from(inventory);
   }
 
-  // READ BY ID
+  
   async findById(id: number) {
     const [item] = await db
       .select()
@@ -33,7 +33,7 @@ export class InventoryRepository {
     return item ?? null;
   }
 
-  // UPDATE
+
   async update(id: number, data: UpdateInventoryInput) {
     const [item] = await db
       .update(inventory)
@@ -47,7 +47,7 @@ export class InventoryRepository {
     return item ?? null;
   }
 
-  // DELETE
+ 
   async delete(id: number) {
     const [item] = await db
       .delete(inventory)

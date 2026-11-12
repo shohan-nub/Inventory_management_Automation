@@ -8,7 +8,7 @@ type CreateProductInput = InferInsertModel<typeof products>;
 type UpdateProductInput = Partial<CreateProductInput>;
 
 export class ProductRepository {
-  // CREATE
+  
   async create(data: CreateProductInput) {
     return db.transaction(async (tx) => {
       const [product] = await tx.insert(products).values(data).returning();
@@ -17,12 +17,12 @@ export class ProductRepository {
     });
   }
 
-  // READ ALL
+ 
   async findAll() {
     return db.select().from(products);
   }
 
-  // READ BY ID
+
   async findById(id: number) {
     const [product] = await db
       .select()
@@ -33,7 +33,7 @@ export class ProductRepository {
     return product ?? null;
   }
 
-  // UPDATE
+  
   async update(id: number, data: UpdateProductInput) {
     const [product] = await db
       .update(products)
@@ -47,7 +47,7 @@ export class ProductRepository {
     return product ?? null;
   }
 
-  // DELETE
+  
   async delete(id: number) {
     return db.transaction(async (tx) => {
       await tx.delete(inventory).where(eq(inventory.productId, id));

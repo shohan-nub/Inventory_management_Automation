@@ -11,13 +11,19 @@ const links = [
   { href: "/admin/inventory", label: "Inventory", icon: "▤" },
   { href: "/admin/suppliers", label: "Suppliers", icon: "◇" },
   { href: "/admin/purchases", label: "Purchases", icon: "↗" },
+  { href: "/admin/sales", label: "Sales", icon: "▥" },
+  { href: "/admin/sales/customers", label: "Customers", icon: "♧" },
 ];
 
 function AdminNavigation({ onNavigate }: { onNavigate: () => void }) {
   const pathname = usePathname();
   return <nav className="sidebar-nav" aria-label="Admin navigation">
     {links.map((item) => {
-      const active = item.href === "/admin" ? pathname === item.href : pathname.startsWith(item.href);
+      const active = item.href === "/admin"
+        ? pathname === item.href
+        : item.href === "/admin/sales"
+          ? pathname === item.href || (pathname.startsWith("/admin/sales/") && !pathname.startsWith("/admin/sales/customers"))
+          : pathname.startsWith(item.href);
       return <Link key={item.href} href={item.href} onClick={onNavigate} className={`sidebar-link ${active ? "active" : ""}`}><span className="nav-icon" aria-hidden="true">{item.icon}</span>{item.label}</Link>;
     })}
   </nav>;

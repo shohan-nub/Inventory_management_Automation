@@ -181,17 +181,17 @@ export default function Home() {
           y: isMobile ? -12 : -34,
           opacity: 0.92,
           ease: "none",
-          scrollTrigger: { trigger: ".home-page", start: "top top", end: "bottom bottom", scrub: 1.2 },
+          scrollTrigger: { trigger: page, start: "top top", end: "bottom bottom", scrub: 1.2 },
         });
         gsap.to(".home-light-bands:not(.home-light-bands-secondary)", {
           y: isMobile ? 10 : 22,
           ease: "none",
-          scrollTrigger: { trigger: ".home-page", start: "top top", end: "bottom bottom", scrub: 1.4 },
+          scrollTrigger: { trigger: page, start: "top top", end: "bottom bottom", scrub: 1.4 },
         });
         gsap.to(".home-light-bands-secondary", {
           y: isMobile ? -9 : -19,
           ease: "none",
-          scrollTrigger: { trigger: ".home-page", start: "top top", end: "bottom bottom", scrub: 1.6 },
+          scrollTrigger: { trigger: page, start: "top top", end: "bottom bottom", scrub: 1.6 },
         });
 
         gsap.fromTo("#clarity .clarity-copy > *", { autoAlpha: 0, y: isMobile ? 18 : 26 }, {
